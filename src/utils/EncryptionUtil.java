@@ -2,7 +2,7 @@ package utils;
 
 import javax.crypto.Cipher;
 import java.util.Base64;
-import javax.crypto.SecretKeySpec;
+import javax.crypto.spec.SecretKeySpec;
 import javax.crypto.SecretKey;
 
 public class EncryptionUtil {
