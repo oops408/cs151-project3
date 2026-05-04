@@ -30,6 +30,7 @@ public class SnakeController extends BaseGameController {
     private Timeline timeline;
     private Canvas canvas;
     private Label infoLabel;
+    private BorderPane root;
     private final MusicPlayer musicPlayer;
     private boolean scoreRecorded;
 
@@ -50,23 +51,25 @@ public class SnakeController extends BaseGameController {
         gameState.reset();
         scoreRecorded = false;
         draw();
+        requestGameFocus();
     }
 
     @Override
     public Parent createView() {
         musicPlayer.playLoop("/audio/snake.mp3");
-        BorderPane root = new BorderPane();
+        root = new BorderPane();
         root.setTop(ToolbarFactory.create(manager));
         root.setPadding(new Insets(15));
 
         canvas = new Canvas(gameState.getSize() * CELL_SIZE, gameState.getSize() * CELL_SIZE);
+        canvas.setFocusTraversable(true);
         infoLabel = new Label("Score: 0");
         infoLabel.getStyleClass().add("section-title");
 
         Button restartButton = new Button("Restart");
         restartButton.setOnAction(e -> resetGame());
 
-        Label help = new Label("Arrow keys move. Escape pauses/resumes. Food can spawn anywhere, including edges.");
+        Label help = new Label("Arrow keys move. Escape pauses/resumes. Click the board if the keys do not respond.");
         help.setWrapText(true);
 
         HBox topInfo = new HBox(20, infoLabel, restartButton);
@@ -74,15 +77,41 @@ public class SnakeController extends BaseGameController {
         VBox center = new VBox(10, topInfo, canvas, help);
         center.getStyleClass().add("card");
         center.setMaxWidth(700);
+        center.setOnMouseClicked(e -> requestGameFocus());
+        canvas.setOnMouseClicked(e -> requestGameFocus());
         root.setCenter(center);
 
         setupLoop();
         draw();
-
-        root.setOnKeyPressed(event -> handleKeyPress(event.getCode()));
-        root.setFocusTraversable(true);
-        root.requestFocus();
+        setupKeyboardControls();
+        requestGameFocus();
         return root;
+    }
+
+    private void setupKeyboardControls() {
+        // JavaFX key events only go to the node that currently has focus.
+        // Listening on the Scene after it exists makes arrow keys reliable even if a button had focus before.
+        root.sceneProperty().addListener((observable, oldScene, newScene) -> {
+            if (newScene != null) {
+                newScene.setOnKeyPressed(event -> {
+                    handleKeyPress(event.getCode());
+                    event.consume();
+                });
+                requestGameFocus();
+            }
+        });
+
+        root.setOnKeyPressed(event -> {
+            handleKeyPress(event.getCode());
+            event.consume();
+        });
+        root.setFocusTraversable(true);
+    }
+
+    private void requestGameFocus() {
+        if (canvas != null) {
+            canvas.requestFocus();
+        }
     }
 
     private void setupLoop() {
