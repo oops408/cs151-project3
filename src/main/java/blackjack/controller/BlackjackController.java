@@ -13,8 +13,13 @@ import utils.MusicPlayer;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
-import javafx.scene.control.*;
-import javafx.scene.layout.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 
 public class BlackjackController extends BaseGameController {
     private BlackjackGameState gameState;
@@ -54,6 +59,7 @@ public class BlackjackController extends BaseGameController {
         centerPane.setAlignment(Pos.TOP_CENTER);
         statusLabel = new Label();
         statusLabel.getStyleClass().add("game-message");
+
         showBlackjackMenu();
         root.setCenter(centerPane);
         return root;
@@ -63,7 +69,7 @@ public class BlackjackController extends BaseGameController {
         Label title = new Label("Blackjack");
         title.getStyleClass().add("title-label");
 
-        Label instructions = new Label("Start a new game or paste an encrypted saveStateString to continue exactly where you left off.");
+        Label instructions = new Label("Start a new game, choose a bet on the table screen, or paste an encrypted saveStateString to continue.");
         instructions.setWrapText(true);
 
         TextArea loadArea = new TextArea();
@@ -77,10 +83,9 @@ public class BlackjackController extends BaseGameController {
         Label loadStatus = new Label();
         loadStatus.getStyleClass().add("warning-text");
 
+        // A new Blackjack game opens the table first. The user chooses the first bet there.
         newGameButton.setOnAction(e -> {
             gameState = new BlackjackGameState(manager.getCurrentUser());
-            gameState.startRound(100);
-            gameState.autoPlayUntilHumanNeeded();
             refreshGameBoard();
         });
 
@@ -114,14 +119,10 @@ public class BlackjackController extends BaseGameController {
         tableArea.getChildren().add(turnLabel);
 
         boolean hideDealerCard = !gameState.isRoundOver();
-
         for (BlackjackParticipant participant : gameState.getParticipants()) {
-            boolean isActive = participant == gameState.getActiveParticipant();
-
+            boolean isActive = participant == gameState.getActiveParticipant() && !gameState.isRoundOver();
             boolean hide = participant.getName().equals("Dealer") && hideDealerCard;
-
-            VBox playerBox = createPlayerArea(participant, isActive, hide);
-            tableArea.getChildren().add(playerBox);
+            tableArea.getChildren().add(createPlayerArea(participant, isActive, hide));
         }
 
         statusLabel.setText(gameState.getStatusMessage());
@@ -130,15 +131,14 @@ public class BlackjackController extends BaseGameController {
         betField.setPromptText("Bet amount");
         betField.setMaxWidth(110);
 
-        Button nextRound = new Button("Next Round");
-        nextRound.setOnAction(e -> startNextRound(betField));
+        Button startRoundButton = new Button(gameState.isRoundOver() ? "Start Round" : "Round In Progress");
+        startRoundButton.setOnAction(e -> startNextRound(betField));
+        startRoundButton.setDisable(!gameState.isRoundOver() || gameState.isHumanOutOfMoney());
 
         Button hitButton = new Button("Hit");
         hitButton.getStyleClass().add("primary-button");
         Button standButton = new Button("Stand");
         Button saveButton = new Button("Save State");
-        Button menuButton = new Button("Blackjack Menu");
-        menuButton.setOnAction(e -> showBlackjackMenu());
 
         hitButton.setDisable(gameState.isRoundOver());
         standButton.setDisable(gameState.isRoundOver());
@@ -153,7 +153,7 @@ public class BlackjackController extends BaseGameController {
         standButton.setOnAction(e -> humanStand());
         saveButton.setOnAction(e -> saveOutput.setText(saveService.save(gameState)));
 
-        HBox actionRow = new HBox(10, hitButton, standButton, saveButton, nextRound, new Label("Next bet:"), betField, menuButton);
+        HBox actionRow = new HBox(10, hitButton, standButton, saveButton, new Label("Bet:"), betField, startRoundButton);
         actionRow.setAlignment(Pos.CENTER);
         actionRow.getStyleClass().add("card");
         actionRow.setMaxWidth(1000);
@@ -198,25 +198,23 @@ public class BlackjackController extends BaseGameController {
             box.getStyleClass().add("active-player");
         }
 
-    Label nameLabel = new Label(player.getName());
-    nameLabel.getStyleClass().add("player-name");
+        Label nameLabel = new Label(player.getName());
+        nameLabel.getStyleClass().add("player-name");
 
-    Label moneyLabel = new Label("Balance: " + player.getBalance() + " | Bet: " + player.getCurrentBet());
+        Label moneyLabel = new Label("Balance: " + player.getBalance() + " | Bet: " + player.getCurrentBet());
+        HBox cardsBox = new HBox(10);
 
-    HBox cardsBox = new HBox(10);
-
-    for (int i = 0; i < player.getHand().getCards().size(); i++) {
-        Card card = player.getHand().getCards().get(i);
-
-        if (hideDealerCard && i == 1) {
-            cardsBox.getChildren().add(createHiddenCard());
-        } else {
-            cardsBox.getChildren().add(createCardView(card));
+        for (int i = 0; i < player.getHand().getCards().size(); i++) {
+            Card card = player.getHand().getCards().get(i);
+            if (hideDealerCard && i == 1) {
+                cardsBox.getChildren().add(createHiddenCard());
+            } else {
+                cardsBox.getChildren().add(createCardView(card));
+            }
         }
-    }
 
-    box.getChildren().addAll(nameLabel, moneyLabel, cardsBox);
-    return box;
+        box.getChildren().addAll(nameLabel, moneyLabel, cardsBox);
+        return box;
     }
 
     private VBox createCardView(Card card) {
@@ -225,7 +223,6 @@ public class BlackjackController extends BaseGameController {
 
         Label rankLabel = new Label(card.getRank().toString());
         Label suitLabel = new Label(getSuitSymbol(card.getSuit()));
-
         rankLabel.getStyleClass().add("card-rank");
         suitLabel.getStyleClass().add("card-suit");
 
@@ -236,10 +233,8 @@ public class BlackjackController extends BaseGameController {
     private VBox createHiddenCard() {
         VBox cardBox = new VBox();
         cardBox.getStyleClass().add("hidden-card");
-
         Label label = new Label("?");
         label.getStyleClass().add("hidden-card-text");
-
         cardBox.getChildren().add(label);
         return cardBox;
     }
