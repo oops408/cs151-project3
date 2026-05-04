@@ -1,0 +1,32 @@
+# Build output
+target/
+out/
+bin/
+build/
+*.class
+
+# IDE / Editor
+.idea/
+.vscode/
+*.iml
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs / temp
+*.log
+*.tmp
+*.swp
+*.bak
+
+# Runtime data
+user_accounts.txt
+high_scores.txt
+
+# Keep dependencies
+!lib/
+
+# Optional: ignore all txt except docs
+# *.txt
+# !README.md
