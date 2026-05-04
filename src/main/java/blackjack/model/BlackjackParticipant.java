@@ -28,7 +28,7 @@ public abstract class BlackjackParticipant {
     }
 
     public void setBalance(int balance) {
-        this.balance = balance;
+        this.balance = Math.max(0, balance);
     }
 
     public int getCurrentBet() {
@@ -36,24 +36,34 @@ public abstract class BlackjackParticipant {
     }
 
     public void setCurrentBet(int currentBet) {
-        this.currentBet = currentBet;
+        this.currentBet = Math.max(0, currentBet);
     }
 
     public boolean isStanding() {
         return standing;
     }
 
+    public void setStanding(boolean standing) {
+        this.standing = standing;
+    }
+
     public void stand() {
         this.standing = true;
     }
 
+    // A new round clears the previous hand and prepares the player to act again.
     public void resetTurn() {
         this.standing = false;
         this.currentBet = 0;
         this.hand.clear();
     }
 
+    // Keep the bet valid: no negative bets, no bet larger than the current balance.
     public void placeBet(int amount) {
+        if (balance <= 0) {
+            currentBet = 0;
+            return;
+        }
         currentBet = Math.max(1, Math.min(amount, balance));
     }
 
@@ -62,11 +72,11 @@ public abstract class BlackjackParticipant {
     }
 
     public void loseBet() {
-        balance -= currentBet;
+        balance = Math.max(0, balance - currentBet);
     }
 
     public void push() {
-        // no change for ties
+        // A tie keeps the player's money the same.
     }
 
     public abstract boolean shouldHit();
