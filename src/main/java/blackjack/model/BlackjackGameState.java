@@ -17,13 +17,16 @@ public class BlackjackGameState {
         this.dealer = new Dealer();
         this.deck = new Deck();
         this.participants = new ArrayList<>();
+
+        // Turn order required by the assignment: human, bot 1, bot 2, dealer.
         participants.add(humanPlayer);
         participants.add(new ComputerPlayer("Bot 1", 1000, 16));
         participants.add(new ComputerPlayer("Bot 2", 1000, 17));
         participants.add(dealer);
+
         this.activeIndex = 0;
-        this.statusMessage = "Start a new round.";
-        this.roundOver = false;
+        this.statusMessage = "Choose a bet and start a new round.";
+        this.roundOver = true;
     }
 
     public HumanPlayer getHumanPlayer() {
@@ -47,7 +50,13 @@ public class BlackjackGameState {
     }
 
     public void setActiveIndex(int activeIndex) {
-        this.activeIndex = activeIndex;
+        if (activeIndex < 0) {
+            this.activeIndex = 0;
+        } else if (activeIndex >= participants.size()) {
+            this.activeIndex = participants.size() - 1;
+        } else {
+            this.activeIndex = activeIndex;
+        }
     }
 
     public String getStatusMessage() {
@@ -66,11 +75,22 @@ public class BlackjackGameState {
         this.roundOver = roundOver;
     }
 
+    public boolean isHumanOutOfMoney() {
+        return humanPlayer.getBalance() <= 0;
+    }
+
     public void startRound(int humanBet) {
+        if (isHumanOutOfMoney()) {
+            roundOver = true;
+            statusMessage = humanPlayer.getName() + " is out of money. Game over.";
+            return;
+        }
+
         deck.reset();
         roundOver = false;
-        statusMessage = "Cards dealt.";
         activeIndex = 0;
+
+        // Clear the old hands and place a new bet for every non-dealer player.
         for (BlackjackParticipant participant : participants) {
             participant.resetTurn();
             if (!(participant instanceof Dealer)) {
@@ -78,11 +98,15 @@ public class BlackjackGameState {
                 participant.placeBet(bet);
             }
         }
+
+        // Deal two cards to each participant.
         for (int i = 0; i < 2; i++) {
             for (BlackjackParticipant participant : participants) {
                 participant.getHand().addCard(deck.drawCard());
             }
         }
+
+        statusMessage = "Cards dealt. " + humanPlayer.getName() + " acts first.";
     }
 
     public BlackjackParticipant getActiveParticipant() {
@@ -93,8 +117,14 @@ public class BlackjackGameState {
     }
 
     public void hitActivePlayer() {
+        if (roundOver) {
+            statusMessage = "Round is over. Start the next round when ready.";
+            return;
+        }
+
         BlackjackParticipant player = getActiveParticipant();
         player.getHand().addCard(deck.drawCard());
+
         if (player.getHand().isBust()) {
             player.stand();
             statusMessage = player.getName() + " busts!";
@@ -105,6 +135,11 @@ public class BlackjackGameState {
     }
 
     public void standActivePlayer() {
+        if (roundOver) {
+            statusMessage = "Round is over. Start the next round when ready.";
+            return;
+        }
+
         BlackjackParticipant player = getActiveParticipant();
         player.stand();
         statusMessage = player.getName() + " stands.";
@@ -132,12 +167,16 @@ public class BlackjackGameState {
     public void finishRound() {
         roundOver = true;
         activeIndex = participants.size() - 1;
+
         int dealerValue = dealer.getHand().getValue();
         boolean dealerBust = dealer.getHand().isBust();
+
+        // Compare each player to the dealer and update money using the current bet.
         for (BlackjackParticipant participant : participants) {
             if (participant instanceof Dealer) {
                 continue;
             }
+
             int value = participant.getHand().getValue();
             if (participant.getHand().isBust()) {
                 participant.loseBet();
@@ -149,6 +188,13 @@ public class BlackjackGameState {
                 participant.push();
             }
         }
-        statusMessage = dealerBust ? "Dealer busts. Winners are paid." : "Round complete.";
+
+        if (humanPlayer.getBalance() <= 0) {
+            statusMessage = "Round complete. " + humanPlayer.getName() + " is out of money.";
+        } else if (dealerBust) {
+            statusMessage = "Dealer busts. Winners are paid.";
+        } else {
+            statusMessage = "Round complete. Start the next round when ready.";
+        }
     }
 }
