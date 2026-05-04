@@ -1,68 +1,24 @@
 # CS-151-06-Spring26 Project 3: Game Manager
 
 ## Overview
-This project is a JavaFX Game Manager with two fully playable games: **Blackjack** and **Snake**. The program supports account creation, login, persistent high scores, a shared toolbar after login, simple music, encrypted save states, and organized packages for object-oriented design.
+This project is a JavaFX Game Manager with two fully playable games: **Blackjack** and **Snake**. The program supports account creation, login, persistent high scores, a shared toolbar after login, different background music for each game, encrypted Blackjack save states, and encrypted account passwords.
 
-The design intentionally stays readable for a CS151 Java programming course. The project avoids overly complex frameworks and keeps the main logic in plain Java classes.
+The project intentionally uses basic Java, JavaFX, text files, and simple object-oriented design. It does **not** require Maven. The included PowerShell scripts compile the project directly with `javac` and run it with `java`.
 
 ## Main Features
 - JavaFX login and account creation screen
 - `user_accounts.txt` stores usernames with encrypted passwords
-- `high_scores.txt` stores high scores for both Blackjack and Snake in one file
-- Main menu shows top 5 scores for both games
+- `high_scores.txt` stores high scores for both Blackjack and Snake in one shared file
+- Main menu shows top 5 high scores for both games
 - Main menu has buttons for Blackjack, Snake, and two disabled future-game buttons
 - Toolbar remains visible after login on the main menu and both games
 - Blackjack supports betting, hit, stand, bust, dealer rules, two computer players, save, and load
 - Snake supports arrow-key movement, random direction, food, growth, score, pause, game over, and restart
 - Two different local mp3 files are included under `src/main/resources/audio/`
-- Save states and passwords are encrypted with a simple symmetric AES utility
+- Save states and passwords are encrypted with a simple AES utility class
 - Unit tests cover important model and utility classes
 
-#### Game Manager
-- Login / Create Account (persistent via file)
-- Toolbar accessible across all scenes
-- Main menu with:
-  - Top 5 high scores for both games
-  - Launch options for Blackjack and Snake
-
-#### Blackjack
-- 1 human player, 2 AI players, 1 dealer
-- Core rules:
-  - Hit / Stand
-  - Bust (>21)
-  - Dealer hits on soft 17
-- Turn-based gameplay
-- Betting system with balances
-- Save & Load system using encrypted save strings
-- Visual card display and status messages
-
-#### Snake
-- Arrow key movement
-- Continuous motion
-- Food spawning (including edges)
-- Snake grows with score increase
-- Collision detection (wall and self)
-- Pause / Resume (Escape key)
-- Game over screen with restart
-- Score persistence
-
-#### Persistence
-- `user_accounts.txt` stores usernames and encrypted passwords
-- `high_scores.txt` stores scores for both games
-- AES encryption used for:
-  - Passwords
-  - Blackjack save states
-
-#### Testing
-- JUnit 5 tests for:
-  - Blackjack logic
-  - Snake logic
-  - Encryption utilities
-- All tests pass using automated script
-
----
-
-## Project Structure/Design
+## Project Structure / Design
 The project is split into small packages so each major part has a clear responsibility.
 
 ```text
@@ -72,37 +28,32 @@ cs151-project3/
 ├── src/
 │   ├── main/
 │   │   ├── java/
-│   │   │   ├── app/              # Entry point (launches JavaFX app)
-│   │   │   ├── blackjack/        # Blackjack game
-│   │   │   │   ├── controller/   # Handles UI + user interaction
-│   │   │   │   └── model/        # Core game logic (cards, players, rules)
-│   │   │   ├── common/           # Shared interfaces / base classes
-│   │   │   ├── manager/          # Login, main menu, toolbar, high scores
-│   │   │   ├── persistence/      # File I/O (accounts, scores, save states)
-│   │   │   ├── snake/            # Snake game
-│   │   │   │   ├── controller/   # Handles keyboard input + rendering
-│   │   │   │   └── model/        # Core snake logic (movement, collisions)
-│   │   │   └── utils/            # Helpers (encryption, audio, styles)
+│   │   │   ├── app/              # Entry point for the JavaFX program
+│   │   │   ├── blackjack/        # Blackjack game package
+│   │   │   │   ├── controller/   # Blackjack UI and button actions
+│   │   │   │   └── model/        # Blackjack cards, players, hands, and game state
+│   │   │   ├── common/           # Shared base classes and interfaces
+│   │   │   ├── manager/          # Login, main menu, toolbar, users, and score records
+│   │   │   ├── persistence/      # Text-file storage for accounts, scores, and saves
+│   │   │   ├── snake/            # Snake game package
+│   │   │   │   ├── controller/   # Snake UI, keyboard input, and drawing
+│   │   │   │   └── model/        # Snake movement, food, position, and game state
+│   │   │   └── utils/            # Encryption, music, and style helpers
 │   │   └── resources/
-│   │       ├── audio/            # Game music files
-│   │       │   ├── blackjack.mp3 # Blackjack background music
-│   │       │   └── snake.mp3     # Snake background music
-│   │       └── styles.css        # JavaFX UI styling
-│   └── test/
-│       ├── blackjack/            # Tests for Blackjack logic
-│       │   └── model/
-│       ├── persistence/          # Tests for encryption/file logic
-│       └── snake/                # Tests for Snake logic
-│           └── model/
-├── run.ps1                       # Compile + run application
-├── test.ps1                      # Compile + run all tests
-├── README.md                     # Project documentation
-├── VIDEO_SCRIPT.md               # Demo presentation script
-└── .gitignore                    # Ignore build/output files
+│   │       ├── audio/
+│   │       │   ├── blackjack.mp3
+│   │       │   └── snake.mp3
+│   │       └── styles/app.css
+│   └── test/                     # JUnit tests
+├── run.ps1                       # Direct javac/java run script
+├── test.ps1                      # Direct javac/JUnit test script
+├── README.md
+├── VIDEO_SCRIPT.md
+└── .gitignore
 ```
 
 ### Package Organization Requirement
-The assignment asks how the three major components should be organized. This project uses:
+The three major components are organized as separate packages:
 - `manager` for the Game Manager
 - `blackjack` for Blackjack
 - `snake` for Snake
@@ -117,41 +68,49 @@ Each game has its own self-contained package. File-related work is separated int
 - **Interfaces:**
   - Blackjack uses `HandValueStrategy`.
   - Snake uses `Movable`.
-  - Shared game controllers implement `RenderableGame`.
-- **Separation of logic and UI:** game state classes do not depend on JavaFX.
-- **Persistence classes:** accounts, high scores, and Blackjack save states are handled outside the game logic.
+  - Shared controllers use `RenderableGame`.
+- **Abstraction:** repeated setup, drawing, save/load, file storage, and round logic are separated into helper methods/classes.
+- **Separation of logic and UI:** model classes hold the game state; controller classes handle JavaFX display and input.
+- **Persistence classes:** accounts, high scores, and Blackjack save states are handled in the `persistence` package.
 
 ## Installation Instructions
+
 ### Requirements
 - Java 21 or newer
 - JavaFX SDK 21
 - PowerShell
-- JUnit Platform Console Standalone jar located in `lib/`
+- JUnit Platform Console Standalone jar in `lib/`
 
-### Scripts
-This project uses PowerShell scripts.
+### JavaFX Setup
+The scripts use direct Java commands, not Maven.
 
-- `run.ps1` compiles the main source files, copies resources, and launches the JavaFX app.
-- `test.ps1` compiles the main source files and test files, copies resources, and runs JUnit tests.
+The easiest option is to set a `JAVAFX_LIB` environment variable to your JavaFX SDK `lib` folder:
+
+```powershell
+$env:JAVAFX_LIB="C:\path\to\javafx-sdk-21\lib"
+```
+
+On the original development machine, the default path in the scripts already points to the local JavaFX SDK. A grader can either set `JAVAFX_LIB` or edit the first path in `run.ps1` and `test.ps1`.
 
 ### Run the Program
-```bash
+```powershell
 .\run.ps1
 ```
 
 ### Run Tests
-```bash
+```powershell
 .\test.ps1
 ```
 
 ## Usage
+
 ### Login / Create Account
 1. Start the application.
 2. Enter a username and password.
 3. Click **Create Account** if the user does not exist.
 4. Click **Log In**.
 
-Accounts are saved in `user_accounts.txt`.
+Accounts are saved in `user_accounts.txt`. Passwords are encrypted before they are written.
 
 ### Main Menu
 After logging in, the main menu shows:
@@ -160,15 +119,17 @@ After logging in, the main menu shows:
 - Open Blackjack button
 - Open Snake button
 - Two future-game buttons
+- A persistent toolbar with a **Main Menu** button
 
 ### Blackjack
 1. Click **Open Blackjack**.
 2. Click **Start New Game**.
-3. Use **Hit** or **Stand** for the human player.
-4. Computer players and the dealer act automatically.
-5. Use **Save State** to generate an encrypted saveStateString.
-6. Copy the saveStateString.
-7. Return to the Blackjack menu and paste the string into the load box to restore the game.
+3. Enter a bet and click **Start Round**.
+4. Use **Hit** or **Stand** for the human player.
+5. Computer players and the dealer act automatically.
+6. Use **Save State** to generate an encrypted saveStateString.
+7. Copy the saveStateString.
+8. Return using the toolbar, reopen Blackjack, and paste the string into the load box to restore the exact game state.
 
 ### Snake
 1. Click **Open Snake**.
@@ -179,33 +140,23 @@ After logging in, the main menu shows:
 6. Click **Restart** to play again.
 
 ## Contributions
-Replace these with your real group members before submission.
 
 | Member | Ownership Area |
 |---|---|
-| Student 1 | Game Manager, login, high scores |
-| Student 2 | Blackjack model and save/load |
-| Student 3 | Snake game and UI |
-| Student 4 | Testing, README, polish, video |
+| oops408 | Game Manager, login/account persistence, high score persistence, Blackjack model/save-load, Snake model/controller, JavaFX UI polish, tests, README, and final integration |
 
-All group members should make commits. Avoid one giant final commit. Use focused commits like:
-- `Add account repository`
-- `Implement Blackjack betting logic`
-- `Add Snake pause and restart`
-- `Add high score persistence`
-- `Polish README and video script`
+Commit history includes multiple focused commits for final fixes, such as direct Java script cleanup, Blackjack save/load improvements, Blackjack betting flow, and README updates.
 
 ## Video Link
-Paste your video link here before submitting:
 
-`TODO: Add video link here`
+**Submission video:** Add the final shared video link here before submitting.
 
-Make sure the video is visible to anyone with the link. Test it in a private/incognito browser.
+The video should be under 25 minutes and visible to anyone with the link. Test the link in a private/incognito browser before submission.
 
 ## Notes for Final Submission
 - Keep the repository private.
 - Invite `telvinzhong` and `Shruthikatta`.
-- Make sure the repo name references `CS-151-06-Spring26`.
+- Make sure the repository name or README clearly references `CS-151-06-Spring26`.
 - Do not commit after the due date.
 - Make sure `user_accounts.txt` and `high_scores.txt` are created when running the app.
-- Keep the video under 25 minutes.
+- Make sure the final video link is added above before submitting.
