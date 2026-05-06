@@ -1,9 +1,9 @@
-# Direct Java/JavaFX run script for CS151 Project 3.
-# No Maven is required. This script compiles with javac and runs the app with java.
+# Direct Java/JavaFX run script
+# Compiles with javac and runs the app with java.
 
 $defaultJavaFxPath = "C:\Users\ilike\Downloads\all\work\openjfx-21.0.11_windows-x64_bin-sdk\javafx-sdk-21.0.11\lib"
 
-# A grader can either edit the default path above or set the JAVAFX_LIB environment variable.
+# Edit the default path above or set the JAVAFX_LIB environment variable.
 if ($env:JAVAFX_LIB) {
     $javaFxPath = $env:JAVAFX_LIB
 } else {
