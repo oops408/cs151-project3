@@ -143,7 +143,10 @@ After logging in, the main menu shows:
 
 | Member | Ownership Area |
 |---|---|
-| oops408 | Game Manager, login/account persistence, high score persistence, Blackjack model/save-load, Snake model/controller, JavaFX UI polish, tests, README, and final integration |
+| TBD | TBD |
+| TBD | TBD |
+| TBD | TBD |
+| TBD | TBD |
 
 Commit history includes multiple focused commits for final fixes, such as direct Java script cleanup, Blackjack save/load improvements, Blackjack betting flow, and README updates.
 
