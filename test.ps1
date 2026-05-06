@@ -1,10 +1,10 @@
-# Direct Java/JUnit test script for CS151 Project 3.
-# No Maven is required. This script compiles with javac and runs tests with the JUnit jar in lib/.
+# Direct Java/JUnit test script
+# Compiles with javac and runs tests with the JUnit jar in lib/.
 
 $defaultJavaFxPath = "C:\Users\ilike\Downloads\all\work\openjfx-21.0.11_windows-x64_bin-sdk\javafx-sdk-21.0.11\lib"
 $junitPath = "lib\junit-platform-console-standalone.jar"
 
-# A grader can either edit the default path above or set the JAVAFX_LIB environment variable.
+# Edit the default path above or set the JAVAFX_LIB environment variable.
 if ($env:JAVAFX_LIB) {
     $javaFxPath = $env:JAVAFX_LIB
 } else {
