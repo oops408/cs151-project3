@@ -143,7 +143,10 @@ After logging in, the main menu shows:
 
 | Member | Ownership Area |
 |---|---|
-| oops408 | Game Manager, login/account persistence, high score persistence, Blackjack model/save-load, Snake model/controller, JavaFX UI polish, tests, README, and final integration |
+| TBD | TBD |
+| TBD | TBD |
+| TBD | TBD |
+| TBD | TBD |
 
 Commit history includes multiple focused commits for final fixes, such as direct Java script cleanup, Blackjack save/load improvements, Blackjack betting flow, and README updates.
 
@@ -153,11 +156,7 @@ Commit history includes multiple focused commits for final fixes, such as direct
 
 The video should be under 25 minutes and visible to anyone with the link. Test the link in a private/incognito browser before submission.
 
-## Notes for Final Submission
-- Keep the repository private.
-- Invite `telvinzhong` and `Shruthikatta`.
-- Make sure the repository name or README clearly references `CS-151-06-Spring26`.
-- Do not commit after the due date.
+## Notes
 - Make sure `user_accounts.txt` and `high_scores.txt` are created when running the app.
 - Make sure the final video link is added above before submitting.
 - Music from https://www.fesliyanstudios.com/royalty-free-music/downloads-c/8-bit-music/
