@@ -1,0 +1,110 @@
+.root {
+    -fx-font-family: "Arial";
+    -fx-background-color: #f5f7fb;
+}
+.title-label {
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+}
+.section-title {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+}
+.card {
+    -fx-background-color: white;
+    -fx-border-color: #d1d5db;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+    -fx-padding: 16;
+}
+.toolbar {
+    -fx-background-color: #1f2937;
+    -fx-padding: 10;
+}
+.toolbar .button {
+    -fx-background-color: white;
+    -fx-text-fill: #111827;
+    -fx-font-weight: bold;
+}
+.button {
+    -fx-padding: 8 14 8 14;
+    -fx-cursor: hand;
+}
+.primary-button {
+    -fx-background-color: #2563eb;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+.warning-text {
+    -fx-text-fill: #b91c1c;
+}
+.success-text {
+    -fx-text-fill: #047857;
+}
+.score-row {
+    -fx-font-size: 14px;
+}
+.game-message {
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+}
+.blackjack-table {
+    -fx-padding: 20;
+    -fx-spacing: 18;
+}
+
+.player-area {
+    -fx-background-color: white;
+    -fx-border-color: #d1d5db;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+    -fx-padding: 12;
+}
+
+.active-player {
+    -fx-border-color: #2563eb;
+    -fx-border-width: 3;
+    -fx-background-color: #eff6ff;
+}
+
+.player-name {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+}
+
+.card-view {
+    -fx-background-color: white;
+    -fx-border-color: #111827;
+    -fx-border-width: 2;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-min-width: 70;
+    -fx-min-height: 95;
+    -fx-alignment: center;
+}
+
+.card-rank {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+}
+
+.card-suit {
+    -fx-font-size: 28px;
+}
+
+.hidden-card {
+    -fx-background-color: #1f2937;
+    -fx-border-color: #111827;
+    -fx-border-width: 2;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-min-width: 70;
+    -fx-min-height: 95;
+    -fx-alignment: center;
+}
+
+.hidden-card-text {
+    -fx-text-fill: white;
+    -fx-font-size: 32px;
+    -fx-font-weight: bold;
+}
