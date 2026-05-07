@@ -1,14 +1,10 @@
 package snake;
 
-import model.*;
+import snake.model.*;
 
 import java.util.List;
 
 public class SnakeController {
-
-    // ── Game state ────────────────────────────────────────────────
-    public enum GameState { READY, RUNNING, PAUSED, GAME_OVER }
-
     // ── Core objects ──────────────────────────────────────────────
     private final Board board;
     private Snake snake;

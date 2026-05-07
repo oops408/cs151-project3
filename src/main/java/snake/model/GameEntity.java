@@ -1,4 +1,4 @@
-package model;
+package snake.model;
 
 public abstract class GameEntity {
     private int x;

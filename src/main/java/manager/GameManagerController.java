@@ -4,7 +4,7 @@ import blackjack.controller.BlackjackController;
 import common.GameType;
 import persistence.AccountRepository;
 import persistence.HighScoreRepository;
-import snake.controller.SnakeController;
+import snake.SnakeController;
 import utils.AppStyles;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
