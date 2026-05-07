@@ -2,9 +2,6 @@ package snake;
 
 import snake.model.*;
 import javafx.scene.Parent;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.layout.VBox;
 import manager.GameManagerController;
 
 import java.util.List;
@@ -130,31 +127,8 @@ public class SnakeController {
     public void setOnGameOver(Runnable cb) { this.onGameOver = cb; }
 
     public Parent createView() {
-        VBox root = new VBox(12);
-
-        Label title = new Label("Snake");
-        Label status = new Label("Snake model loaded. Use the standalone Snake UI for full gameplay.");
-        Button startButton = new Button("Start Logic");
-        Button tickButton = new Button("Tick");
-        Button backButton = new Button("Back to Main Menu");
-
-        startButton.setOnAction(event -> {
-            startGame();
-            status.setText("State: " + getState());
-        });
-
-        tickButton.setOnAction(event -> {
-            tick();
-            status.setText("State: " + getState() + ", Score: " + getScoreManager().getCurrentScore());
-        });
-
-        backButton.setOnAction(event -> {
-            if (managerController != null) {
-                managerController.showMainMenu();
-            }
-        });
-
-        root.getChildren().addAll(title, status, startButton, tickButton, backButton);
-        return root;
+        SnakeUI snakeUI = new SnakeUI();
+        return snakeUI.createView();
     }
 }
+
