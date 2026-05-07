@@ -6,6 +6,7 @@ import persistence.AccountRepository;
 import persistence.HighScoreRepository;
 import snake.SnakeController;
 import utils.AppStyles;
+import utils.MusicPlayer;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
@@ -94,7 +95,8 @@ public class GameManagerController {
     }
 
     public void showMainMenu() {
-        BorderPane root = new BorderPane();
+        MusicPlayer.stopAll();
+BorderPane root = new BorderPane();
         root.setTop(ToolbarFactory.create(this));
         root.setPadding(new Insets(20));
 

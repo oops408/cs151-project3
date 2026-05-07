@@ -1,5 +1,7 @@
 package snake;
 
+import common.GameType;
+import manager.GameManagerController;
 import snake.model.Direction;
 import snake.model.Point;
 import utils.MusicPlayer;
@@ -51,6 +53,7 @@ public class SnakeUI extends Application {
     private SnakeScoreManager scoreManager;
     private SnakeController controller;
     private MusicPlayer musicPlayer;
+    private GameManagerController managerController;
 
     private Canvas canvas;
     private Label lblScore;
@@ -74,6 +77,11 @@ public class SnakeUI extends Application {
         stage.setResizable(false);
         stage.show();
         canvas.requestFocus();
+    }
+
+    public Parent createView(GameManagerController managerController) {
+        this.managerController = managerController;
+        return createView();
     }
 
     public Parent createView() {
@@ -317,11 +325,19 @@ public class SnakeUI extends Application {
     private void onGameOver() {
         musicPlayer.stop();
         btnStart.setText("START");
+
+        if (managerController != null && managerController.getCurrentUser() != null) {
+            managerController.getHighScoreRepository().recordScore(
+                    GameType.SNAKE,
+                    managerController.getCurrentUser(),
+                    scoreManager.getCurrentScore()
+            );
+        }
     }
 
     private void onLevelUp() {}
 
-   // ── Particle ──────────────────────────────────────────────────
+   // â”€â”€ Particle â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     private void spawnParticles(Point p) {}
 

@@ -6,23 +6,31 @@ import javafx.scene.media.MediaPlayer;
 import java.net.URL;
 
 public class MusicPlayer {
-    private MediaPlayer mediaPlayer;
+    private static MediaPlayer currentPlayer;
 
     public void playLoop(String resourcePath) {
-        stop();
+        stopAll();
+
         URL url = getClass().getResource(resourcePath);
         if (url == null) {
             return;
         }
+
         Media media = new Media(url.toExternalForm());
-        mediaPlayer = new MediaPlayer(media);
-        mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
-        mediaPlayer.play();
+        currentPlayer = new MediaPlayer(media);
+        currentPlayer.setCycleCount(MediaPlayer.INDEFINITE);
+        currentPlayer.play();
     }
 
     public void stop() {
-        if (mediaPlayer != null) {
-            mediaPlayer.stop();
+        stopAll();
+    }
+
+    public static void stopAll() {
+        if (currentPlayer != null) {
+            currentPlayer.stop();
+            currentPlayer.dispose();
+            currentPlayer = null;
         }
     }
 }

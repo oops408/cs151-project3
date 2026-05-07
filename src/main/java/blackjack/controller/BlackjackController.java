@@ -2,6 +2,7 @@ package blackjack.controller;
 
 import blackjack.model.BlackjackGame;
 import blackjack.model.Player;
+import common.GameType;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
@@ -15,9 +16,12 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import manager.GameManagerController;
 import utils.CryptoUtils;
+import utils.MusicPlayer;
 
 public class BlackjackController {
+    private final GameManagerController managerController;
     private final BlackjackGame game;
+    private final MusicPlayer musicPlayer;
 
     private Label turnLabel;
     private Label statusLabel;
@@ -29,11 +33,18 @@ public class BlackjackController {
     private Button hitButton;
     private Button standButton;
 
+    private boolean scoreRecordedForRound;
+
     public BlackjackController(GameManagerController managerController) {
+        this.managerController = managerController;
         this.game = new BlackjackGame();
+        this.musicPlayer = new MusicPlayer();
+        this.scoreRecordedForRound = false;
     }
 
     public Parent createView() {
+        musicPlayer.playLoop("/audio/blackjack.mp3");
+
         BorderPane screen = new BorderPane();
         screen.setPadding(new Insets(20));
 
@@ -134,12 +145,15 @@ public class BlackjackController {
     }
 
     private void startRound() {
+        scoreRecordedForRound = false;
+
         try {
             int bet = Integer.parseInt(betField.getText().trim());
             game.startNewRound(bet);
         } catch (NumberFormatException ex) {
             game.startNewRound(0);
         }
+
         playAutomatedTurnsIfNeeded();
     }
 
@@ -156,10 +170,11 @@ public class BlackjackController {
         try {
             saveText = CryptoUtils.decrypt(saveText);
         } catch (RuntimeException ex) {
-            // Allow loading older/plain save strings too, but encrypted strings are preferred.
+            // Allow older/plain save strings too.
         }
 
         boolean loaded = game.loadFromString(saveText);
+        scoreRecordedForRound = !game.isRoundGoing();
         statusLabel.setText(loaded ? "Game loaded from saveStateString." : game.getMessage());
     }
 
@@ -177,6 +192,7 @@ public class BlackjackController {
         turnLabel.setText("Current Turn: " + game.getTurnName());
         statusLabel.setText(game.getMessage());
         updateResultBanner();
+        recordBlackjackScoreIfRoundComplete();
 
         hitButton.setDisable(!game.isHumanTurn());
         standButton.setDisable(!game.isHumanTurn());
@@ -186,6 +202,29 @@ public class BlackjackController {
         playerArea.getChildren().add(createPlayerBox("Computer Player 1", game.getComputerOne(), false));
         playerArea.getChildren().add(createPlayerBox("Computer Player 2", game.getComputerTwo(), false));
         playerArea.getChildren().add(createPlayerBox("Dealer", game.getDealer(), game.shouldHideDealerCard()));
+    }
+
+    private void recordBlackjackScoreIfRoundComplete() {
+        if (scoreRecordedForRound) {
+            return;
+        }
+
+        if (game.isRoundGoing()) {
+            return;
+        }
+
+        if (game.getHumanPlayer().getHand().getSize() == 0) {
+            return;
+        }
+
+        String username = managerController.getCurrentUser();
+        if (username == null || username.isBlank()) {
+            return;
+        }
+
+        int finalMoneyScore = game.getHumanPlayer().getMoney();
+        managerController.getHighScoreRepository().recordScore(GameType.BLACKJACK, username, finalMoneyScore);
+        scoreRecordedForRound = true;
     }
 
     private void updateResultBanner() {
@@ -199,14 +238,14 @@ public class BlackjackController {
             return;
         }
 
-        int humanValue = game.getHumanPlayer().getHand().getBestValue();
-        int dealerValue = game.getDealer().getHand().getBestValue();
-
         if (game.getHumanPlayer().getHand().getSize() == 0 || game.getDealer().getHand().getSize() == 0) {
             resultLabel.setText("");
             resultLabel.setStyle("-fx-font-size: 18px; -fx-font-weight: bold; -fx-padding: 8px;");
             return;
         }
+
+        int humanValue = game.getHumanPlayer().getHand().getBestValue();
+        int dealerValue = game.getDealer().getHand().getBestValue();
 
         if (game.getHumanPlayer().getHand().isBust()) {
             resultLabel.setText("YOU LOST: You busted with " + humanValue + ".");
@@ -225,6 +264,7 @@ public class BlackjackController {
             resultLabel.setStyle("-fx-font-size: 20px; -fx-font-weight: bold; -fx-padding: 8px; -fx-text-fill: darkred;");
         }
     }
+
     private GridPane createPlayerBox(String title, Player player, boolean hideDealerCard) {
         GridPane box = new GridPane();
         box.setHgap(12);
@@ -275,6 +315,3 @@ public class BlackjackController {
         return text.toString();
     }
 }
-
-
-
