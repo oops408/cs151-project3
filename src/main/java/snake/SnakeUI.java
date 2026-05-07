@@ -1,8 +1,9 @@
 package snake;
 
-import model.Direction;
-import model.Point;
-import snake.SnakeController.GameState;
+import snake.model.Direction;
+import snake.model.Point;
+import utils.MusicPlayer;
+import snake.model.GameState;
 
 import javafx.animation.AnimationTimer;
 import javafx.animation.PauseTransition;
@@ -25,7 +26,6 @@ import javafx.util.Duration;
 
 import java.util.*;
 
-import javax.swing.plaf.synth.Region;
 
 public class SnakeUI extends Application {
 
@@ -35,8 +35,8 @@ public class SnakeUI extends Application {
     private static final int CANVAS_W = COLS * CELL;
     private static final int CANVAS_H = ROWS * CELL;
 
-    private static final Color BG = Color.web("#FAFAFA");
-    private static final Color GRID_COLOR = Color.web("#F0F0F0");
+    private static final Color BG = Color.web("BLACK");
+    private static final Color GRID_COLOR = Color.web("WHITE");
     private static final Color TEXT_DARK = Color.web("#1A1A1A");
     private static final Color TEXT_MID = Color.web("#888888");
     private static final Color TEXT_LIGHT = Color.web("#BBBBBB");
@@ -49,6 +49,7 @@ public class SnakeUI extends Application {
 
     private SnakeScoreManager scoreManager;
     private SnakeController controller;
+    private MusicPlayer musicPlayer;
 
     private Canvas canvas;
     private Label lblScore;
@@ -65,6 +66,7 @@ public class SnakeUI extends Application {
 
         scoreManager = new SnakeScoreManager();
         controller = new SnakeController(COLS, ROWS, scoreManager);
+        musicPlayer = new MusicPlayer();
 
         controller.setOnUpdate(this::render);
         controller.setOnGameOver(this::onGameOver);
@@ -75,16 +77,23 @@ public class SnakeUI extends Application {
 
         Scene scene = new Scene(root, CANVAS_W, CANVAS_H + 52);
         scene.setFill(Color.WHITE);
-        scene.setOnKeyPressed(e -> handleKey(e.getCode()));
+        canvas.setFocusTraversable(true);
+        canvas.setOnKeyPressed(e -> {
+            e.consume();
+            handleKey(e.getCode());
+        });
 
         stage.setTitle("Snake");
         stage.setScene(scene);
         stage.setResizable(false);
         stage.show();
+        canvas.requestFocus();
 
         render();
         startGameLoop(); 
+        musicPlayer.playLoop("/audio/snake.mp3");
     }
+
 
     // UI setup
 
@@ -123,6 +132,7 @@ public class SnakeUI extends Application {
                 controller.togglePause();
                 btnStart.setText("PAUSE");
             }
+            canvas.requestFocus();
         });
 
         hud.getChildren().addAll(
@@ -210,16 +220,14 @@ public class SnakeUI extends Application {
         gameLoop.start();
     }
 
-    //keyboard control "WASD"
-
     private void handleKey(KeyCode code) {
         switch (code) {
-            case UP, W -> controller.changeDirection(Direction.UP);
-            case DOWN, S -> controller.changeDirection(Direction.DOWN);
-            case LEFT, A -> controller.changeDirection(Direction.LEFT);
-            case RIGHT, D -> controller.changeDirection(Direction.RIGHT);
+            case UP -> controller.changeDirection(Direction.UP);
+            case DOWN -> controller.changeDirection(Direction.DOWN);
+            case LEFT -> controller.changeDirection(Direction.LEFT);
+            case RIGHT -> controller.changeDirection(Direction.RIGHT);
 
-            case SPACE -> {
+            case ESCAPE -> {
                 if (controller.getState() == GameState.RUNNING)
                     controller.togglePause();
                 else if (controller.getState() == GameState.PAUSED)
@@ -298,6 +306,7 @@ public class SnakeUI extends Application {
     }
 
     private void onGameOver() {
+        musicPlayer.stop();
         btnStart.setText("START");
     }
 
@@ -310,12 +319,6 @@ public class SnakeUI extends Application {
     private void tickParticles() {}
 
     private void drawParticles(GraphicsContext gc) {}
-
-
-    //the main
-    public static void main(String[] args) {
-        launch(args);
-    }
 
     private static class Particle {
         double x,y,vx,vy,alpha,radius;
