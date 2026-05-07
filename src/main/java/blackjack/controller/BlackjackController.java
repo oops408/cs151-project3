@@ -21,6 +21,7 @@ public class BlackjackController {
 
     private Label turnLabel;
     private Label statusLabel;
+    private Label resultLabel;
     private VBox playerArea;
     private TextField betField;
     private TextField loadField;
@@ -50,6 +51,10 @@ public class BlackjackController {
 
         statusLabel = new Label();
         statusLabel.setWrapText(true);
+
+        resultLabel = new Label();
+        resultLabel.setWrapText(true);
+        resultLabel.setStyle("-fx-font-size: 18px; -fx-font-weight: bold; -fx-padding: 8px;");
 
         betField = new TextField("50");
         betField.setPromptText("Bet amount");
@@ -116,6 +121,7 @@ public class BlackjackController {
                 directions,
                 turnLabel,
                 statusLabel,
+                resultLabel,
                 actionRow,
                 loadRow,
                 saveStateArea,
@@ -170,6 +176,7 @@ public class BlackjackController {
 
         turnLabel.setText("Current Turn: " + game.getTurnName());
         statusLabel.setText(game.getMessage());
+        updateResultBanner();
 
         hitButton.setDisable(!game.isHumanTurn());
         standButton.setDisable(!game.isHumanTurn());
@@ -181,6 +188,43 @@ public class BlackjackController {
         playerArea.getChildren().add(createPlayerBox("Dealer", game.getDealer(), game.shouldHideDealerCard()));
     }
 
+    private void updateResultBanner() {
+        if (resultLabel == null) {
+            return;
+        }
+
+        if (game.isRoundGoing()) {
+            resultLabel.setText("");
+            resultLabel.setStyle("-fx-font-size: 18px; -fx-font-weight: bold; -fx-padding: 8px;");
+            return;
+        }
+
+        int humanValue = game.getHumanPlayer().getHand().getBestValue();
+        int dealerValue = game.getDealer().getHand().getBestValue();
+
+        if (game.getHumanPlayer().getHand().getSize() == 0 || game.getDealer().getHand().getSize() == 0) {
+            resultLabel.setText("");
+            resultLabel.setStyle("-fx-font-size: 18px; -fx-font-weight: bold; -fx-padding: 8px;");
+            return;
+        }
+
+        if (game.getHumanPlayer().getHand().isBust()) {
+            resultLabel.setText("YOU LOST: You busted with " + humanValue + ".");
+            resultLabel.setStyle("-fx-font-size: 20px; -fx-font-weight: bold; -fx-padding: 8px; -fx-text-fill: darkred;");
+        } else if (game.getDealer().getHand().isBust()) {
+            resultLabel.setText("YOU WON: Dealer busted. Your hand: " + humanValue + ".");
+            resultLabel.setStyle("-fx-font-size: 20px; -fx-font-weight: bold; -fx-padding: 8px; -fx-text-fill: darkgreen;");
+        } else if (humanValue > dealerValue) {
+            resultLabel.setText("YOU WON: " + humanValue + " beats dealer's " + dealerValue + ".");
+            resultLabel.setStyle("-fx-font-size: 20px; -fx-font-weight: bold; -fx-padding: 8px; -fx-text-fill: darkgreen;");
+        } else if (humanValue == dealerValue) {
+            resultLabel.setText("PUSH: You tied the dealer at " + humanValue + ".");
+            resultLabel.setStyle("-fx-font-size: 20px; -fx-font-weight: bold; -fx-padding: 8px; -fx-text-fill: goldenrod;");
+        } else {
+            resultLabel.setText("YOU LOST: Dealer's " + dealerValue + " beats your " + humanValue + ".");
+            resultLabel.setStyle("-fx-font-size: 20px; -fx-font-weight: bold; -fx-padding: 8px; -fx-text-fill: darkred;");
+        }
+    }
     private GridPane createPlayerBox(String title, Player player, boolean hideDealerCard) {
         GridPane box = new GridPane();
         box.setHgap(12);
@@ -231,3 +275,6 @@ public class BlackjackController {
         return text.toString();
     }
 }
+
+
+
