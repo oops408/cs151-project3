@@ -144,7 +144,7 @@ After logging in, the main menu shows:
 |---|---|
 | Suparn Posina (oops408) | Full Game Manager login/account flow, persistent high score functionality, menu/toolbar integrations, final testing/debugging, music/encryption checking, UI polishing, pause/game over overlays, final demo verification |
 | David Aguiniga (MrHitaDavid3) | Created all the model code/classes, such as the player class and the BlackjackGame class, also created the initial files/setup the first iteration of the blackjack game files. |
-| TBD | TBD |
+| Derek Yeh (ambtkm) | snake/model package, fixes for SnakeUI |
 | TBD | TBD |
 
 ## Video Link
@@ -157,4 +157,3 @@ Explains key design decisions, describes areas of ownership, and demos Game Mana
 - Make sure `user_accounts.txt` and `high_scores.txt` are created when running the app.
 - Music from https://www.fesliyanstudios.com/royalty-free-music/downloads-c/8-bit-music/
 - 8 Bit Surf - by David Renda: blackjack.mp3
-- 8 Bit Menu - by David Renda (slower): snake.mp3
