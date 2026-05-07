@@ -1,4 +1,4 @@
-package model;
+package snake.model;
 
 import java.util.List;
  
