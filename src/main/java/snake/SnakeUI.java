@@ -1,8 +1,8 @@
 package snake;
 
-import model.Direction;
-import model.Point;
-import snake.SnakeController.GameState;
+import snake.model.Direction;
+import snake.model.Point;
+import snake.model.GameState;
 
 import javafx.animation.AnimationTimer;
 import javafx.animation.PauseTransition;
@@ -25,7 +25,6 @@ import javafx.util.Duration;
 
 import java.util.*;
 
-import javax.swing.plaf.synth.Region;
 
 public class SnakeUI extends Application {
 
@@ -75,12 +74,17 @@ public class SnakeUI extends Application {
 
         Scene scene = new Scene(root, CANVAS_W, CANVAS_H + 52);
         scene.setFill(Color.WHITE);
-        scene.setOnKeyPressed(e -> handleKey(e.getCode()));
+        canvas.setFocusTraversable(true);
+        canvas.setOnKeyPressed(e -> {
+            e.consume();
+            handleKey(e.getCode());
+        });
 
         stage.setTitle("Snake");
         stage.setScene(scene);
         stage.setResizable(false);
         stage.show();
+        canvas.requestFocus();
 
         render();
         startGameLoop(); 
@@ -123,6 +127,7 @@ public class SnakeUI extends Application {
                 controller.togglePause();
                 btnStart.setText("PAUSE");
             }
+            canvas.requestFocus();
         });
 
         hud.getChildren().addAll(
@@ -210,16 +215,14 @@ public class SnakeUI extends Application {
         gameLoop.start();
     }
 
-    //keyboard control "WASD"
-
     private void handleKey(KeyCode code) {
         switch (code) {
-            case UP, W -> controller.changeDirection(Direction.UP);
-            case DOWN, S -> controller.changeDirection(Direction.DOWN);
-            case LEFT, A -> controller.changeDirection(Direction.LEFT);
-            case RIGHT, D -> controller.changeDirection(Direction.RIGHT);
+            case UP -> controller.changeDirection(Direction.UP);
+            case DOWN -> controller.changeDirection(Direction.DOWN);
+            case LEFT -> controller.changeDirection(Direction.LEFT);
+            case RIGHT -> controller.changeDirection(Direction.RIGHT);
 
-            case SPACE -> {
+            case ESCAPE -> {
                 if (controller.getState() == GameState.RUNNING)
                     controller.togglePause();
                 else if (controller.getState() == GameState.PAUSED)
@@ -310,12 +313,6 @@ public class SnakeUI extends Application {
     private void tickParticles() {}
 
     private void drawParticles(GraphicsContext gc) {}
-
-
-    //the main
-    public static void main(String[] args) {
-        launch(args);
-    }
 
     private static class Particle {
         double x,y,vx,vy,alpha,radius;
