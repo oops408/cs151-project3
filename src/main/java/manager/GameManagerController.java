@@ -164,12 +164,20 @@ public class GameManagerController {
 
     public void openBlackjack() {
         BlackjackController controller = new BlackjackController(this);
-        setScene(controller.createView());
+        setSceneWithToolbar(controller.createView());
     }
 
     public void openSnake() {
         SnakeController controller = new SnakeController(this);
-        setScene(controller.createView());
+        setSceneWithToolbar(controller.createView());
+    }
+
+    private void setSceneWithToolbar(Parent content) {
+        BorderPane root = new BorderPane();
+        root.setTop(ToolbarFactory.create(this));
+        root.setCenter(content);
+        root.setPadding(new Insets(20));
+        setScene(root);
     }
 
     private void setScene(Parent root) {
@@ -178,3 +186,4 @@ public class GameManagerController {
         stage.setScene(scene);
     }
 }
+
