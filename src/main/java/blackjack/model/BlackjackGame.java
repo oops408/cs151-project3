@@ -1,3 +1,5 @@
+package blackjack.model;
+
 public class BlackjackGame {
 
 private Deck deck;
@@ -335,8 +337,4 @@ private Deck deck;
     public Dealer getDealer() {
         return dealer;
     }
-}
-
-
-
 }

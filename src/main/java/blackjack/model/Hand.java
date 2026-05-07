@@ -1,14 +1,22 @@
+package blackjack.model;
+
 import java.util.ArrayList;
 
 public class Hand {
-
     private ArrayList<Card> cards;
 
     public Hand() {
         cards = new ArrayList<Card>();
     }
 
-    // First let's create some simple getter methods
+    public void addCard(Card card) {
+        cards.add(card);
+    }
+
+    public void clear() {
+        cards.clear();
+    }
+
     public Card getCard(int index) {
         return cards.get(index);
     }
@@ -17,7 +25,6 @@ public class Hand {
         return cards.size();
     }
 
-    //Time for the more complex getter, this function will calculate the best value by treating our aces as 11s, and if it could bust. then it changes it to a 1
     public int getBestValue() {
         int total = 0;
         int aceCount = 0;
@@ -39,7 +46,6 @@ public class Hand {
         return total;
     }
 
-    // This command will check whether the Ace is used as an 11 or as a 1
     public boolean isSoft() {
         int total = 0;
         int aceCount = 0;
@@ -59,17 +65,14 @@ public class Hand {
         return aceCount > 0 && total <= 21;
     }
 
-    // This function I created will check if the hand has busted
     public boolean isBust() {
         return getBestValue() > 21;
     }
 
-    // I created this function to check the player got a Black jack, this occurs if the first two cards 
     public boolean isBlackjack() {
         return cards.size() == 2 && getBestValue() == 21;
     }
 
-    // This function will save the text
     public String saveText() {
         String text = "";
 
@@ -84,7 +87,6 @@ public class Hand {
         return text;
     }
 
-    // Thia funxtion will load our text
     public void loadText(String text) {
         cards.clear();
 
@@ -100,6 +102,4 @@ public class Hand {
             }
         }
     }
-    
-
 }
