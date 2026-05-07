@@ -58,6 +58,17 @@ public class Player {
 		return name + "," + money + "," + bet + "," + hand.saveText();
 	}
 
+	// Now here is my function to deal with loading text
+	public void loadText(String text) {
+		String[] parts = text.split(",", 4);
+		name = parts[0];
+		money = Integer.parseInt(parts[1]);
+		bet = Integer.parseInt(parts[2]);
+		hand = new Hand();
+		hand.loadText(parts[3]);
+	}
+
+
 
     // I created the following getter methods for name, hand, money, and bet
     public String getName() {
