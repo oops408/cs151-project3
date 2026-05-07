@@ -25,6 +25,8 @@ import javafx.util.Duration;
 
 import java.util.*;
 
+import javax.swing.plaf.synth.Region;
+
 public class SnakeUI extends Application {
 
     private static final int COLS = 20;
@@ -84,7 +86,7 @@ public class SnakeUI extends Application {
         startGameLoop(); 
     }
 
-    // ================= UI =================
+    // UI setup
 
     private BorderPane buildLayout() {
 
@@ -208,7 +210,7 @@ public class SnakeUI extends Application {
         gameLoop.start();
     }
 
-    //INPUT
+    //keyboard control "WASD"
 
     private void handleKey(KeyCode code) {
         switch (code) {
@@ -236,7 +238,7 @@ public class SnakeUI extends Application {
         btnStart.setText("PAUSE");
     }
 
-    // RENDER
+    // Render
 
     private void render() {
         GraphicsContext gc = canvas.getGraphicsContext2D();
@@ -301,7 +303,7 @@ public class SnakeUI extends Application {
 
     private void onLevelUp() {}
 
-    // PARTICLES
+   // ── Particle ──────────────────────────────────────────────────
 
     private void spawnParticles(Point p) {}
 
@@ -309,8 +311,8 @@ public class SnakeUI extends Application {
 
     private void drawParticles(GraphicsContext gc) {}
 
-    // MAIN
 
+    //the main
     public static void main(String[] args) {
         launch(args);
     }
