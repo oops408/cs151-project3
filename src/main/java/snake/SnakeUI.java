@@ -1,8 +1,5 @@
 package snake;
 
-import controller.SnakeController;
-import controller.SnakeController.GameState;
-import controller.SnakeScoreManager;
 import model.Direction;
 import model.Point;
 
