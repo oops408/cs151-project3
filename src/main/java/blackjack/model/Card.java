@@ -46,13 +46,13 @@ public class Card {
         String symbol = suit;
 
         if (suit.equals("H")) {
-            symbol = "?";
+            symbol = "♥";
         } else if (suit.equals("D")) {
-            symbol = "?";
+            symbol = "♦";
         } else if (suit.equals("C")) {
-            symbol = "?";
+            symbol = "♣";
         } else if (suit.equals("S")) {
-            symbol = "?";
+            symbol = "♠";
         }
 
         return rank + symbol;
