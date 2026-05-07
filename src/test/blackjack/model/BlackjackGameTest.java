@@ -14,7 +14,7 @@ public class BlackjackGameTest {
     }
 
     @Test
-    void startNewRoundWithValidBetStartsRound() {
+    void startNewRoundWithValidBetDealsStartingHands() {
         BlackjackGame game = new BlackjackGame();
 
         game.startNewRound(50);
