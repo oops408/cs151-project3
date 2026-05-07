@@ -143,7 +143,7 @@ After logging in, the main menu shows:
 | Member | Ownership Area |
 |---|---|
 | Suparn Posina (oops408) | Full Game Manager login/account flow, persistent high score functionality, menu/toolbar integrations, final testing/debugging, music/encryption checking, UI polishing, pause/game over overlays, final demo verification |
-| TBD | TBD |
+| David Aguiniga (MrHitaDavid3) | Created all the model code/classes, such as the player class and the BlackjackGame class, also created the initial files/setup the first iteration of the blackjack game files. |
 | TBD | TBD |
 | TBD | TBD |
 
