@@ -11,6 +11,7 @@ import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.Parent;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
@@ -63,7 +64,19 @@ public class SnakeUI extends Application {
 
     @Override
     public void start(Stage stage) {
+        Parent root = createView();
 
+        Scene scene = new Scene(root, CANVAS_W, CANVAS_H + 52);
+        scene.setFill(Color.WHITE);
+
+        stage.setTitle("Snake");
+        stage.setScene(scene);
+        stage.setResizable(false);
+        stage.show();
+        canvas.requestFocus();
+    }
+
+    public Parent createView() {
         scoreManager = new SnakeScoreManager();
         controller = new SnakeController(COLS, ROWS, scoreManager);
         musicPlayer = new MusicPlayer();
@@ -75,23 +88,18 @@ public class SnakeUI extends Application {
 
         BorderPane root = buildLayout();
 
-        Scene scene = new Scene(root, CANVAS_W, CANVAS_H + 52);
-        scene.setFill(Color.WHITE);
         canvas.setFocusTraversable(true);
         canvas.setOnKeyPressed(e -> {
             e.consume();
             handleKey(e.getCode());
         });
 
-        stage.setTitle("Snake");
-        stage.setScene(scene);
-        stage.setResizable(false);
-        stage.show();
-        canvas.requestFocus();
-
         render();
-        startGameLoop(); 
+        startGameLoop();
         musicPlayer.playLoop("/audio/snake.mp3");
+
+        root.setOnMouseClicked(event -> canvas.requestFocus());
+        return root;
     }
 
 
@@ -335,3 +343,5 @@ public class SnakeUI extends Application {
         }
     }
 }
+
+
