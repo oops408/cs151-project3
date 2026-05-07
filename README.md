@@ -3,7 +3,7 @@
 ## Overview
 This project is a JavaFX Game Manager with two fully playable games: **Blackjack** and **Snake**. The program supports account creation, login, persistent high scores, a shared toolbar after login, different background music for each game, encrypted Blackjack save states, and encrypted account passwords.
 
-The project intentionally uses basic Java, JavaFX, text files, and simple object-oriented design. It does **not** require Maven. The included PowerShell scripts compile the project directly with `javac` and run it with `java`.
+The project intentionally uses basic Java, JavaFX, text files, and simple object-oriented design. The included PowerShell scripts compile the project directly with `javac` and run it with `java`.
 
 ## Main Features
 - JavaFX login and account creation screen
@@ -16,7 +16,7 @@ The project intentionally uses basic Java, JavaFX, text files, and simple object
 - Snake supports arrow-key movement, random direction, food, growth, score, pause, game over, and restart
 - Two different local mp3 files are included under `src/main/resources/audio/`
 - Save states and passwords are encrypted with a simple AES utility class
-- Unit tests cover important model and utility classes
+- Unit tests cover important model, persistence, utility, and OOP behavior
 
 ## Project Structure / Design
 The project is split into small packages so each major part has a clear responsibility.
@@ -52,7 +52,7 @@ cs151-project3/
 └── .gitignore
 ```
 
-### Package Organization Requirement
+### Package Organization
 The three major components are organized as separate packages:
 - `manager` for the Game Manager
 - `blackjack` for Blackjack
@@ -63,15 +63,14 @@ Each game has its own self-contained package. File-related work is separated int
 ### Object-Oriented Design
 - **Encapsulation:** model fields are private and changed through methods.
 - **Inheritance:**
-  - Blackjack uses abstract `BlackjackParticipant`, extended by `HumanPlayer`, `ComputerPlayer`, and `Dealer`.
-  - Snake uses abstract `AbstractBoardEntity`, extended by `Food`.
+  - Blackjack uses `Player`, extended by `HumanPlayer`, `ComputerPlayer`, and `Dealer`.
+  - Snake uses `GameEntity`, extended by `Snake` and `Food`.
 - **Interfaces:**
-  - Blackjack uses `HandValueStrategy`.
-  - Snake uses `Movable`.
-  - Shared controllers use `RenderableGame`.
+  - Blackjack uses `AutoPlayer`, implemented by `ComputerPlayer` and `Dealer`.
+  - Snake uses `Movable`, implemented by `Snake`.
 - **Abstraction:** repeated setup, drawing, save/load, file storage, and round logic are separated into helper methods/classes.
 - **Separation of logic and UI:** model classes hold the game state; controller classes handle JavaFX display and input.
-- **Persistence classes:** accounts, high scores, and Blackjack save states are handled in the `persistence` package.
+- **Persistence classes:** accounts and high scores are handled in the `persistence` package. Blackjack save-state creation/loading is handled by the Blackjack game logic, and save-state encryption is handled by `CryptoUtils`.
 
 ## Installation Instructions
 
@@ -82,15 +81,15 @@ Each game has its own self-contained package. File-related work is separated int
 - JUnit Platform Console Standalone jar in `lib/`
 
 ### JavaFX Setup
-The scripts use direct Java commands, not Maven.
+The scripts use direct Java commands.
 
-The easiest option is to set a `JAVAFX_LIB` environment variable to your JavaFX SDK `lib` folder:
+We set a `JAVAFX_LIB` environment variable to your JavaFX SDK `lib` folder:
 
 ```powershell
 $env:JAVAFX_LIB="C:\path\to\javafx-sdk-21\lib"
 ```
 
-On the original development machine, the default path in the scripts already points to the local JavaFX SDK. A grader can either set `JAVAFX_LIB` or edit the first path in `run.ps1` and `test.ps1`.
+Or edit the first path in `run.ps1` and `test.ps1`.
 
 ### Run the Program
 ```powershell
@@ -134,31 +133,28 @@ After logging in, the main menu shows:
 ### Snake
 1. Click **Open Snake**.
 2. Use arrow keys to move.
-3. Press Escape to pause or resume.
+3. Press Escape (esc) to pause or resume.
 4. Eat food to grow and increase score.
 5. The game ends when the snake hits a wall or itself.
-6. Click **Restart** to play again.
+6. Press **R** or use the start button to restart after game over. An overlay displays your final score for each round.
 
 ## Contributions
 
 | Member | Ownership Area |
 |---|---|
+| Suparn Posina (oops408) | Full Game Manager login/account flow, persistent high score functionality, menu/toolbar integrations, final testing/debugging, music/encryption checking, UI polishing, pause/game over overlays, final demo verification |
 | TBD | TBD |
 | TBD | TBD |
 | TBD | TBD |
-| TBD | TBD |
-
-Commit history includes multiple focused commits for final fixes, such as direct Java script cleanup, Blackjack save/load improvements, Blackjack betting flow, and README updates.
 
 ## Video Link
 
-**Submission video:** Add the final shared video link here before submitting.
+**Submission Video:** ADD HERE
 
-The video should be under 25 minutes and visible to anyone with the link. Test the link in a private/incognito browser before submission.
+Explains key design decisions, describes areas of ownership, and demos Game Manager, Blackjack, Snake, persistence, save/load, high scores, music, encryption, and tests.
 
 ## Notes
 - Make sure `user_accounts.txt` and `high_scores.txt` are created when running the app.
-- Make sure the final video link is added above before submitting.
 - Music from https://www.fesliyanstudios.com/royalty-free-music/downloads-c/8-bit-music/
 - 8 Bit Surf - by David Renda: blackjack.mp3
 - 8 Bit Menu - by David Renda (slower): snake.mp3
