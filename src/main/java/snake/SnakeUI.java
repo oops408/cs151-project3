@@ -34,8 +34,8 @@ public class SnakeUI extends Application {
     private static final int CANVAS_W = COLS * CELL;
     private static final int CANVAS_H = ROWS * CELL;
 
-    private static final Color BG = Color.web("#FAFAFA");
-    private static final Color GRID_COLOR = Color.web("#F0F0F0");
+    private static final Color BG = Color.web("BLACK");
+    private static final Color GRID_COLOR = Color.web("WHITE");
     private static final Color TEXT_DARK = Color.web("#1A1A1A");
     private static final Color TEXT_MID = Color.web("#888888");
     private static final Color TEXT_LIGHT = Color.web("#BBBBBB");
