@@ -1,4 +1,4 @@
-package model;
+package snake.model;
 
 public class Point {
     private int x;
