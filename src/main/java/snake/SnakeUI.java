@@ -242,6 +242,7 @@ public class SnakeUI extends Application {
 
     private void restart() {
         particles.clear();
+        musicPlayer.playLoop("/audio/snake.mp3");
         controller.startGame();
         btnStart.setText("PAUSE");
     }
@@ -294,7 +295,7 @@ public class SnakeUI extends Application {
             gc.fillText("Press START", CANVAS_W/2, CANVAS_H/2);
         } else if (controller.getState() == GameState.GAME_OVER) {
             gc.fillText("Game Over", CANVAS_W/2, CANVAS_H/2 - 20);
-            gc.fillText("Press START to restart", CANVAS_W/2, CANVAS_H/2 + 10);
+            gc.fillText("Press R to restart", CANVAS_W/2, CANVAS_H/2 + 10);
         }
     }
 
