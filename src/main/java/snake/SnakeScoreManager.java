@@ -1,3 +1,5 @@
+package snake;
+
 public class SnakeScoreManager {
 
     private static final java.util.prefs.Preferences PREFS =
