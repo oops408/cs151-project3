@@ -1,3 +1,5 @@
+package blackjack.model;
+
 public class ComputerPlayer extends Player implements AutoPlayer {
     
     private int standNumber;
@@ -16,3 +18,4 @@ public class ComputerPlayer extends Player implements AutoPlayer {
 
 
 }
+

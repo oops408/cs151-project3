@@ -6,8 +6,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class FoodTest {
     @Test
-    public void foodCanBeCreated() {
-        Food food = new Food(new Point(5, 5));
+    public void foodCanBeCreatedWithBoard() {
+        Board board = new Board(10, 10);
+        Food food = new Food(board);
 
         assertNotNull(food);
     }

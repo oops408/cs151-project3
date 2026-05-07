@@ -1,3 +1,5 @@
+package blackjack.model;
+
 public class BlackjackGame {
 
 private Deck deck;

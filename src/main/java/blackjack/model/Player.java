@@ -1,3 +1,5 @@
+package blackjack.model;
+
 public class Player {
 
     // Here are my variables
@@ -89,3 +91,4 @@ public class Player {
 
 
 }
+
