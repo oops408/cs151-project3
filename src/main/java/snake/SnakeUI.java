@@ -2,6 +2,7 @@ package snake;
 
 import snake.model.Direction;
 import snake.model.Point;
+import utils.MusicPlayer;
 import snake.model.GameState;
 
 import javafx.animation.AnimationTimer;
@@ -48,6 +49,7 @@ public class SnakeUI extends Application {
 
     private SnakeScoreManager scoreManager;
     private SnakeController controller;
+    private MusicPlayer musicPlayer;
 
     private Canvas canvas;
     private Label lblScore;
@@ -64,6 +66,7 @@ public class SnakeUI extends Application {
 
         scoreManager = new SnakeScoreManager();
         controller = new SnakeController(COLS, ROWS, scoreManager);
+        musicPlayer = new MusicPlayer();
 
         controller.setOnUpdate(this::render);
         controller.setOnGameOver(this::onGameOver);
@@ -88,7 +91,9 @@ public class SnakeUI extends Application {
 
         render();
         startGameLoop(); 
+        musicPlayer.playLoop("/audio/snake.mp3");
     }
+
 
     // UI setup
 
@@ -301,6 +306,7 @@ public class SnakeUI extends Application {
     }
 
     private void onGameOver() {
+        musicPlayer.stop();
         btnStart.setText("START");
     }
 
