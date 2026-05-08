@@ -19,7 +19,7 @@ The project intentionally uses basic Java, JavaFX, text files, and simple object
 - Unit tests cover important model, persistence, utility, and OOP behavior
 
 ## Project Structure / Design
-The project is split into small packages so each major part has a clear responsibility.
+The project is split into intentional packages so each major part has a clear responsibility.
 
 ```text
 cs151-project3/
@@ -31,24 +31,24 @@ cs151-project3/
 │   │   │   ├── app/              # Entry point for the JavaFX program
 │   │   │   ├── blackjack/        # Blackjack game package
 │   │   │   │   ├── controller/   # Blackjack UI and button actions
-│   │   │   │   └── model/        # Blackjack cards, players, hands, and game state
-│   │   │   ├── common/           # Shared base classes and interfaces
+│   │   │   │   └── model/        # Blackjack cards, deck, hands, players, and game state
+│   │   │   ├── common/           # Shared game types/classes used across the app
 │   │   │   ├── manager/          # Login, main menu, toolbar, users, and score records
-│   │   │   ├── persistence/      # Text-file storage for accounts, scores, and saves
-│   │   │   ├── snake/            # Snake game package
-│   │   │   │   ├── controller/   # Snake UI, Snake Controller, and score manager
-│   │   │   │   └── model/        # Snake movement, food, position, and game state
+│   │   │   ├── persistence/      # Text-file storage for accounts and high scores
+│   │   │   ├── snake/            # Snake UI, SnakeController, and SnakeScoreManager
+│   │   │   │   └── model/        # Snake board, movement, food, position, entities, and game state
 │   │   │   └── utils/            # Encryption, music, and style helpers
 │   │   └── resources/
 │   │       ├── audio/
 │   │       │   ├── blackjack.mp3
 │   │       │   └── snake.mp3
-│   │       └── styles/app.css
-│   └── test/                     # JUnit tests
-├── run.ps1                       # Direct javac/java run script
-├── test.ps1                      # Direct javac/JUnit test script
+│   │       └── styles/
+│   │           └── app.css
+│   └── test/                     # JUnit tests for Blackjack, Snake, persistence, utils, and OOP behavior
+├── run.ps1/run.sh                # Direct javac/java run script
+├── test.ps1/test.sh              # Direct javac/JUnit test script
 ├── README.md
-├── VIDEO_SCRIPT.md
+├── FRESHINSTALL.md
 └── .gitignore
 ```
 
