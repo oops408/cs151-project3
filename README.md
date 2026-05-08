@@ -148,11 +148,11 @@ After logging in, the main menu shows:
 | Suparn Posina (oops408) | Full Game Manager login/account flow, persistent high score functionality, menu/toolbar integrations, final testing/debugging, music/encryption checking, UI polishing, pause/game over overlays, final demo verification |
 | David Aguiniga (MrHitaDavid3) | Created all the model code/classes, such as the player class and the BlackjackGame class, also created the initial files/setup the first iteration of the blackjack game files. |
 | Derek Yeh (ambtkm) | snake/model package, fixes for SnakeUI |
-| Elaine(seynl77) | Snake controller, Snake score manager and Snake UI. |
+| Elaine Li(seynl77) | Snake controller, Snake score manager and Snake UI. |
 
 ## Video Link
 
-**Submission Video:** ADD HERE
+**Submission Video:** [Link to the presentation](https://drive.google.com/file/d/1dUaHmTUCdmGdBYIYpodiPLuyUpMAzaPg/view?usp=drive_link)
 
 Explains key design decisions, describes areas of ownership, and demos Game Manager, Blackjack, Snake, persistence, save/load, high scores, music, encryption, and tests.
 
