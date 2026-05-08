@@ -157,3 +157,4 @@ Explains key design decisions, describes areas of ownership, and demos Game Mana
 - Make sure `user_accounts.txt` and `high_scores.txt` are created when running the app.
 - Music from https://www.fesliyanstudios.com/royalty-free-music/downloads-c/8-bit-music/
 - 8 Bit Surf - by David Renda: blackjack.mp3
+- Attribution Not Required: snake.mp3
