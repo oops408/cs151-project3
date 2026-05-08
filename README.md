@@ -36,7 +36,7 @@ cs151-project3/
 │   │   │   ├── manager/          # Login, main menu, toolbar, users, and score records
 │   │   │   ├── persistence/      # Text-file storage for accounts, scores, and saves
 │   │   │   ├── snake/            # Snake game package
-│   │   │   │   ├── controller/   # Snake UI, keyboard input, and drawing
+│   │   │   │   ├── controller/   # Snake UI, Snake Controller, and score manager
 │   │   │   │   └── model/        # Snake movement, food, position, and game state
 │   │   │   └── utils/            # Encryption, music, and style helpers
 │   │   └── resources/
@@ -145,7 +145,7 @@ After logging in, the main menu shows:
 | Suparn Posina (oops408) | Full Game Manager login/account flow, persistent high score functionality, menu/toolbar integrations, final testing/debugging, music/encryption checking, UI polishing, pause/game over overlays, final demo verification |
 | David Aguiniga (MrHitaDavid3) | Created all the model code/classes, such as the player class and the BlackjackGame class, also created the initial files/setup the first iteration of the blackjack game files. |
 | Derek Yeh (ambtkm) | snake/model package, fixes for SnakeUI |
-| TBD | TBD |
+| Elaine(seynl77) | Snake controller, Snake score manager and Snake UI. |
 
 ## Video Link
 
