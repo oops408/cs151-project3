@@ -146,7 +146,7 @@ After logging in, the main menu shows:
 | Member | Ownership Area |
 |---|---|
 | Suparn Posina (oops408) | Full Game Manager login/account flow, persistent account storage with encryption for passwords/high score functionality for both games tied to login/toolbar integration, main menu/launcher setup, Blackjack/Snake integration with Game Manager, music integration, Blackjack save state, UI/overlay polishing, final testing/debugging + JUnit, final demo verification of all features. |
-| David Aguiniga (MrHitaDavid3) | Created all the model code/classes, such as the player class and the BlackjackGame class, also created the initial files/setup the first iteration of the blackjack game files. |
+| David Aguiniga (MrHitaDavid3) | I designed and implemented the core model architecture for the blackjack application, including key classes such as Player and BlackjackGame. In addition, I established the initial project structure and completed the first iteration of the game’s foundational codebase. |
 | Derek Yeh (ambtkm) | snake/model package, fixes for SnakeUI |
 | Elaine Li(seynl77) | Snake controller, Snake score manager and Snake UI. |
 
