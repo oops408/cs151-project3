@@ -8,6 +8,7 @@ import utils.MusicPlayer;
 import snake.model.GameState;
 
 import javafx.animation.AnimationTimer;
+import javafx.animation.PauseTransition;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -24,6 +25,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.util.*;
 
@@ -279,10 +281,10 @@ public class SnakeUI extends Application {
 
         // Thin grid lines for visual alignment
         gc.setStroke(GRID_COLOR);
-        gc.setGlobalAlpha(0.1); 
-        for (int i = 0; i <= COLS; i++) gc.strokeLine(i * CELL, 0, i * CELL, CANVAS_H);
-        for (int j = 0; j <= ROWS; j++) gc.strokeLine(0, j * CELL, CANVAS_W, j * CELL);
-        gc.setGlobalAlpha(1.0);
+        for (int i = 0; i <= COLS; i++)
+            gc.strokeLine(i * CELL, 0, i * CELL, CANVAS_H);
+        for (int j = 0; j <= ROWS; j++)
+            gc.strokeLine(0, j * CELL, CANVAS_W, j * CELL);
 
         drawFood(gc);
         drawSnake(gc);
