@@ -48,7 +48,7 @@ cs151-project3/
 ├── run.ps1/run.sh                # Direct javac/java run script
 ├── test.ps1/test.sh              # Direct javac/JUnit test script
 ├── README.md
-├── FRESHINSTALL.md
+├── FRESHINSTALL.md               # MacOS fresh install and run steps
 └── .gitignore
 ```
 
@@ -75,6 +75,9 @@ Each game has its own self-contained package. File-related work is separated int
 ## Installation Instructions
 
 ### Requirements
+
+##### For MacOS installation/setup, see FRESHINSTALL.md instead.
+
 - Java 21 or newer
 - JavaFX SDK 21
 - PowerShell
